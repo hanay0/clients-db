@@ -1,0 +1,79 @@
+<section>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-8">
+          <form [formGroup]="clientForm" (ngSubmit)="save(); $event.preventDefault();">
+            <div class="mb-3">
+              <label for="name" class="form-label">Name</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="name" 
+                formControlName="name" 
+                aria-describedby="emailHelp"
+                [ngClass]="{ 'is-invalid': clientForm.get('name')?.invalid && clientForm.get('name')?.touched }"
+              >
+              <div *ngIf="clientForm.get('name')?.invalid && clientForm.get('name')?.touched" class="invalid-feedback">
+                Name is required.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="age" class="form-label">Age</label>
+              <input 
+                type="number" 
+                class="form-control"
+                formControlName="age" 
+                id="age"
+                [ngClass]="{ 'is-invalid': clientForm.get('age')?.invalid && clientForm.get('age')?.touched }"
+              >
+              <div *ngIf="clientForm.get('age')?.invalid && clientForm.get('age')?.touched" class="invalid-feedback">
+                <div *ngIf="clientForm.get('age')?.errors?.['required']">Age is required.</div>
+                <div *ngIf="clientForm.get('age')?.errors?.['min']">Age must be at least 22</div>
+                <div *ngIf="clientForm.get('age')?.errors?.['max']">Age must be at most 100</div>
+              </div>
+            </div>
+            <div formArrayName="children">
+              <div *ngFor="let child of children.controls; let i = index" [formGroupName]="i" class="mb-3">
+                <div class="row">
+                    <div class="col-6">
+                        <label for="childName" class="form-label">Child Name</label>
+                        <input 
+                        type="text" 
+                        class="form-control" 
+                        id="childName" 
+                        formControlName="name"
+                        [ngClass]="{ 'is-invalid': child.get('name')?.invalid && child.get('name')?.touched }"
+                        >
+                        <div *ngIf="child.get('name')?.invalid && child.get('name')?.touched" class="invalid-feedback">
+                            Child name is required.
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label for="childAge" class="form-label">Child Age</label>
+                        <input 
+                          type="number" 
+                          class="form-control" 
+                          id="childAge" 
+                          formControlName="age"
+                          [ngClass]="{ 'is-invalid': child.get('age')?.invalid && child.get('age')?.touched }"
+                        >
+                        <div *ngIf="child.get('age')?.invalid && child.get('age')?.touched" class="invalid-feedback">
+                          <div *ngIf="child.get('age')?.errors?.['required']">Child age is required.</div>
+                          <div *ngIf="child.get('age')?.errors?.['min']">Child age must be at least 0</div>
+                        </div>
+                        <button type="button" class="btn btn-danger mt-2" (click)="removeChild(i)">Delete Child</button>
+                    </div>
+                </div>
+                
+              </div>
+            </div>
+            <div class="mb-3">
+              <button type="button" class="btn btn-success" (click)="addChild()">Add Child</button>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  
